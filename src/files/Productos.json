@@ -1,0 +1,182 @@
+[
+  {
+    "id": 67,
+    "title": "pruebaa5",
+    "description": "Sonido fuerte",
+    "price": 15000,
+    "thumbnails": "imgEstereo",
+    "code": "abc456",
+    "stock": 100
+  },
+  {
+    "id": 81,
+    "title": "Computadora",
+    "description": "Muy linda",
+    "price": 5000,
+    "thumbnails": "./computadora/lenovo",
+    "code": "abc299",
+    "stock": 100
+  },
+  {
+    "id": 43,
+    "title": "Computadora HP",
+    "description": "Muy linda",
+    "price": 5000,
+    "thumbnails": "./computadora/hp",
+    "code": "abc299",
+    "stock": 100
+  },
+  {
+    "id": 97,
+    "title": "Computadora HP",
+    "description": "Muy linda",
+    "price": 5000,
+    "thumbnails": "./computadora/hp",
+    "code": "abc289",
+    "stock": 100
+  },
+  {
+    "id": 99,
+    "title": "Computadora Nueva",
+    "description": "Muy linda",
+    "price": 5000,
+    "thumbnails": "./computadora/IntelCore",
+    "code": "abc349",
+    "stock": 100
+  },
+  {
+    "id": 33,
+    "title": "Tablet",
+    "description": "15 pulagadas, con lapiz",
+    "price": 6000,
+    "thumbnails": "./computadora/IntelCore",
+    "code": "abc949",
+    "stock": 100
+  },
+  {
+    "id": 72,
+    "title": "Tablet",
+    "description": "15 pulagadas, con lapiz",
+    "price": 6000,
+    "thumbnails": "./computadora/IntelCore",
+    "code": "abc949",
+    "stock": 100
+  },
+  {
+    "id": 34,
+    "title": "Tablet",
+    "description": "15 pulagadas, con lapiz",
+    "price": 6000,
+    "thumbnails": "./computadora/IntelCore",
+    "code": "abc949",
+    "stock": 100
+  },
+  {
+    "id": 49,
+    "title": "Samsung 65 pulgadas",
+    "description": "Con WiFi y definicion 4K",
+    "price": 12000,
+    "thumbnails": "./televisores/Samsug65",
+    "code": "abc549",
+    "stock": 100
+  },
+  {
+    "id": 8,
+    "title": "Lg 45 pulgadas",
+    "description": "Con WiFi y definicion 4K",
+    "price": 10000,
+    "thumbnails": "./televisores/Lg45",
+    "code": "abc549",
+    "stock": 100
+  },
+  {
+    "id": 78,
+    "title": "Lg 45 pulgadas",
+    "description": "Con WiFi y definicion 4K",
+    "price": 10000,
+    "thumbnails": "./televisores/Lg45",
+    "code": "abc678",
+    "stock": 100
+  },
+  {
+    "id": 44,
+    "title": "Iphone 11",
+    "description": "5G 128gb",
+    "price": 17000,
+    "thumbnails": "./celulares/iphone11",
+    "code": "abc978",
+    "stock": 100
+  },
+  {
+    "id": 8,
+    "title": "Iphone 12",
+    "description": "5G 158gb",
+    "price": 20000,
+    "thumbnails": "./celulares/iphone12",
+    "code": "abc478",
+    "stock": 100
+  },
+  {
+    "id": 41,
+    "title": "Iphone 13",
+    "description": "5G 158gb",
+    "price": 25000,
+    "thumbnails": "./celulares/iphone13",
+    "code": "abc278",
+    "stock": 100
+  },
+  {
+    "id": 16,
+    "title": "Iphone 14",
+    "description": "5G 158gb",
+    "price": 28000,
+    "thumbnails": "./celulares/iphone14",
+    "code": "abc608",
+    "stock": 100
+  },
+  {
+    "id": 48,
+    "title": "Iphone 15",
+    "description": "5G 158gb",
+    "price": 35000,
+    "thumbnails": "./celulares/iphone15",
+    "code": "abc6308",
+    "stock": 100
+  },
+  {
+    "id": 83,
+    "title": "Samnsung A01",
+    "description": "LTE",
+    "price": 12000,
+    "thumbnails": "./celulares/samsungA01",
+    "code": "abc6908",
+    "stock": 100
+  },
+  {
+    "id": 85,
+    "title": "Samnsung S7",
+    "description": "LTE",
+    "price": 16000,
+    "thumbnails": "./celulares/samsungS7",
+    "code": "abc6908",
+    "stock": 100
+  },
+  {
+    "id": 36,
+    "title": "Samnsung S7",
+    "description": "LTE",
+    "price": 16000,
+    "thumbnails": "./celulares/samsungS7",
+    "code": "abc6208",
+    "stock": 100
+  },
+  {
+    "id": 32,
+    "title": "Motorola Edge",
+    "description": "LTE",
+    "price": 13000,
+    "thumbnails": "./celulares/motorolaEdge",
+    "code": "abc8908",
+    "stock": 100
+  }
+]

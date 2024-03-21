@@ -1,0 +1,38 @@
+<div id="logout">
+    <h1>Bienvenido!!</h1>
+    <p>Nombre: {{user.name}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Rol: {{user.role}}</p>
+     <input type="button" value="logout">
+</div>
+
+
+    <h1>Productos</h1>
+
+    {{#each result.docs}}
+        <div>
+            <p>Nombre: {{this.title}}</p>
+            <p>Descripcion: {{this.description}}</p>
+            <p>Precio: ${{this.price}}</p>
+            <p>Categoria: {{this.category}}</p>
+            <p>Stock: {{this.stock}}</p>
+            <button id="buttonAdd">Añadir al carrito</button>
+        </div>
+        <br />
+    {{/each}}
+
+    <div>
+        {{#if result.hasPrevPage}}
+            <a href="{{result.prevLink}}">&lt;&lt; Anterior</a>
+        {{/if}}
+
+        &nbsp; {{result.page}} &nbsp;
+
+        {{#if result.hasNextPage}}
+            <a href="{{result.nextLink}}">Siguiente &gt;&gt;</a>
+        {{/if}}
+    </div>
+
+
+
+<script src="/js/logout.js"></script>
