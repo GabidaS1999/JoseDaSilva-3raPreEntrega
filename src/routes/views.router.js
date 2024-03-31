@@ -63,7 +63,7 @@ router.get('/login', (req, res) => {
 
 function auth(req, res, next){
     if(req.session.user === 'pepe' && req.session.admin){
-        return next
+        return next()
     }else{
         return res.status(403).send("Usuario no autorizado")
     }
