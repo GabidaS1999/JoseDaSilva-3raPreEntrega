@@ -11,7 +11,7 @@ router.get("/register", (req,res)=>{
 });
 
 
-router.get("/admin", (req,res)=>{
+router.get("/", (req,res)=>{
     res.render('profile', {
         user: req.session.user
     })

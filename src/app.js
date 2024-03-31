@@ -15,6 +15,9 @@ import  FileStore  from "session-file-store";
 import MongoStore from "connect-mongo";
 import userRoutes from './routes/users.views.router.js';
 import sessionRoutes from './routes/session.router.js';
+import githubLoginViewRouter from './routes/github-login.views.router.js'
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 
 let fileStore =  FileStore(session);
@@ -64,6 +67,11 @@ app.use(session({
 }))
 
 
+//passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -88,7 +96,8 @@ app.use('/api/session', sessionRoutes);
 app.use('/api/products', productsRoutes)
 app.use('/api/carts', cartRoutes);
 app.use('/users', userRoutes);
-app.use('/', viewsRoutes)
+app.use('/', viewsRoutes);
+app.use('/github', githubLoginViewRouter)
 
 
 

@@ -1,42 +1,50 @@
 import { Router } from "express";
 import userModel from "../dao/models/user.model.js";
-
+import { createHash, isValidPassword } from "../utils.js";
+import passport from "passport";
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
-    const { first_name, last_name, email, age, password } = req.body
-    console.log("Registrando usuario");
-    console.log(req.body);
 
-    const exist = await userModel.findOne({ email })
-    if (exist) {
-        return res.status(402).send({ status: "error", message: "Usuario ya existe" })
-    }
+router.get('/github', passport.authenticate('github', {scope: ['user:email']}), async (req, res)=>{
 
-    const user = {
-        first_name,
-        last_name,
-        email,
-        age,
-        password,
-        role
-    }
-
-    const result = await userModel.create(user)
-    res.send({status: "success", message:"Usuario creado con exito con ID:" + result.id});
 })
 
-router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    const user = await userModel.findOne({ email, password });
-
-    if (email == 'adminCoder@coder.com' && password == 'adminCod3r123') {
-        req.session.admin = true;
+router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/github/error'}),async(req, res)=>{
+    req.session.admin = true;
+    const user = req.user
+    req.session.user = {
+        name: `${user.first_name} ${user.last_name}`,
+        email: user.email,
+        age: user.age,
+        role: req.session.admin ? 'admin' : 'user',
+        logedBy: 'GitHub'
     }
+
+    
+
+    res.redirect("/products")
+})
+
+router.post("/register", passport.authenticate('register', {failureRedirect:'/api/session/fail-register' }), async(req, res)=>{
+    console.log("Registrando usuario");
+    res.status(201).send({status: 'succes', message: "Usuario creado de forma existosa"})
+});
+
+router.get("/fail-register", (req, res) => {
+    res.status(401).send({error:"Error en el registro"})
+})
+
+router.post("/login", passport.authenticate('login', {failureRedirect:'/api/session/fail-login' }), async (req, res) => {
+    console.log("Usuario encontrado: ");
+    const user = req.user;
+    console.log(user);
+    
+
     if (!user) {
         return res.status(401).send({ status: "error", error: "Credenciales incorrectas" });
     }
+
 
     req.session.user = {
         name: `${user.first_name} ${user.last_name}`,
