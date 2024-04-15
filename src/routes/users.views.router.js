@@ -1,4 +1,6 @@
 import { Router } from "express";
+import passport from "passport";
+import { authToken } from "../utils.js";
 
 const router = Router();
 
@@ -11,9 +13,9 @@ router.get("/register", (req,res)=>{
 });
 
 
-router.get("/", (req,res)=>{
+router.get("/",  passport.authenticate('jwt', {session: true}), (req,res)=>{
     res.render('profile', {
-        user: req.session.user
+        user: req.user
     })
 });
 

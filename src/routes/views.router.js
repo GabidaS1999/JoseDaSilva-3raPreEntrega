@@ -3,9 +3,8 @@ import  {productModel}  from '../dao/models/products.models.js';
 import { cartsModel } from '../dao/models/carts.models.js';
 const router = Router();
 import cookieParser from 'cookie-parser';
-// //Cookie sin firma
-// router.use(cookieParser());
-//cookie con firme
+import passport from 'passport';
+
 router.use(cookieParser('CoderS3cr3tC0d3'))
 
 
@@ -86,7 +85,7 @@ router.get('/message', (req, res)=>{
     res.render("messages");
 });
 
-router.get('/products', async (req, res) => {
+router.get('/products',passport.authenticate('jwt', {session: false}), async (req, res) => {
     let sortPrice = req.query.sortPrice || 'asc';
     let page = parseInt(req.query.page)
     let limit = parseInt(req.query.limit)
@@ -117,7 +116,7 @@ router.get('/products', async (req, res) => {
     console.log(result);
     res.render("products", {
         result: result, 
-        user: req.session.user
+        user: req.user
     });
     
 });

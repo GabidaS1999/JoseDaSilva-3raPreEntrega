@@ -18,7 +18,8 @@ import sessionRoutes from './routes/session.router.js';
 import githubLoginViewRouter from './routes/github-login.views.router.js'
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
-
+import jwtRouter from "./routes/jwt.routes.js";
+import cookieParser from "cookie-parser";
 
 let fileStore =  FileStore(session);
 let productService = new ProductsService();
@@ -98,10 +99,12 @@ app.use('/api/carts', cartRoutes);
 app.use('/users', userRoutes);
 app.use('/', viewsRoutes);
 app.use('/github', githubLoginViewRouter)
+app.use('/api/jwt', jwtRouter);
 
 
 
-
+//cookie
+app.use(cookieParser("Cod3rS3cr3tC0d3"));
 
 
 

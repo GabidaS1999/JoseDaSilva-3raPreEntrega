@@ -3,8 +3,14 @@ import passportLocal from 'passport-local';
 import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import GitHubStrategy from 'passport-github2';
+import jwtStrategy from 'passport-jwt';
+import {PRIVATE_KEY} from '../utils.js';
 
+const JwtStrategy = jwtStrategy.Strategy;
+const ExtractJwt = jwtStrategy.ExtractJwt;
 const localStrategy = passportLocal.Strategy;
+
+
 
 const initializePassport = () => {
     passport.use('github', new GitHubStrategy({
@@ -42,13 +48,25 @@ const initializePassport = () => {
 
     }))
 
+    passport.use('jwt', new JwtStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: PRIVATE_KEY
+
+        }, async(jwt_payload, done)=>{
+            console.log(`Entrando a passpord strategy con jwt`)
+            try {
+                
+                console.log(`JWT obtenido del PayLoad ${jwt_payload}`);
+                return done(null, jwt_payload.user);
 
 
-
-
-
-
-
+            } catch (error) {
+                console.log(error)
+                return done(error)
+            }
+        }
+    ))
 
     passport.use('register', new localStrategy({ passReqToCallback: true, usernameField: 'email' },
         async (req, username, password, done) => {
@@ -95,10 +113,6 @@ const initializePassport = () => {
                 console.warn("Credenciales invalidas para: " + username);
                 return done (null, false)
             };
-        
-       
-
-
             return done(null, user)
 
         } catch (error) {
@@ -123,6 +137,18 @@ const initializePassport = () => {
 
 };
 
+const cookieExtractor = req => {
+    let token = null;
+    console.log("Entrando a Cookie Extractor");
+    if (req && req.cookies) {
+        console.log("Cookies presentes: ");
+        console.log(req.cookies);
+        token = req.cookies['jwtCookieToken'];
+        console.log("Token obtenido desde Cookie")
+        console.log(token)
+    }
+    return token;
+}
 
 
 export default initializePassport;
