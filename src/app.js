@@ -20,13 +20,24 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import jwtRouter from "./routes/jwt.routes.js";
 import cookieParser from "cookie-parser";
+import UsersExtendRouter from "./routes/custom/users.extend.routes.js";
+import config from "./config/config.js";
+import MongoSingleton from "./config/mongodb-singleton.js";
+import cors from 'cors';
+
+
+
+
+
+
 
 let fileStore =  FileStore(session);
 let productService = new ProductsService();
 let productManager = new ProductManager();
 let messageService = new MessagesService();
 const app = express();
-const PORT = process.env.PORT || 8080;
+const SERVER_PORT = config.port;
+console.log(SERVER_PORT)
 
 
 const hbs = exphbs.create({
@@ -44,16 +55,19 @@ app.set('view engine', 'handlebars');
 const URL_MONGO = 'mongodb+srv://josedasilva1999:Olivia2024@cluster0.elp8ja0.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0';
 const connectMongo = async () => {
     try {
-        mongoose.connect(URL_MONGO)
+        await MongoSingleton.getInstance()
         console.log("Conectado con exito a MongoDB");
-        
-
     } catch (error) {
         console.error("No se pudo conectar la BD con Moongose" + error);
         process.exit()
     }
 }
 connectMongo();
+
+//cors
+app.use(cors());
+
+
 
 //session
 app.use(session({
@@ -101,6 +115,8 @@ app.use('/', viewsRoutes);
 app.use('/github', githubLoginViewRouter)
 app.use('/api/jwt', jwtRouter);
 
+const usersExtendRouter = new UsersExtendRouter();
+app.use("/api/extend/users", usersExtendRouter.getRouter());
 
 
 //cookie
@@ -114,9 +130,24 @@ app.use(cookieParser("Cod3rS3cr3tC0d3"));
 
 
 
-const httpServer = app.listen(PORT, () => {
-    console.log(`Server run on port: ${PORT}`);
+const httpServer = app.listen(SERVER_PORT, () => {
+    console.log(`Server run on port: ${SERVER_PORT}`);
+
+    //console.log(process.argv.slice(2));
+
+    // process.exit(5)
+
+    //Esta excepcion no fue capturada
+    //console()
+
+
 });
+
+
+
+
+
+
 const socketServer = new Server(httpServer);
 const messages = [];
 const productos = await productService.getAll();

@@ -33,7 +33,7 @@ export default class ProductsService {
             throw error;
         }
     }
-    tProductByCode = async ()=>{
+    getProductByCode = async ()=>{
         try {
             let product = await productModel.findOne({ code: code });
             return product ? product.toObject() : null;

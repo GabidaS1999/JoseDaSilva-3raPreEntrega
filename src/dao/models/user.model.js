@@ -12,9 +12,9 @@ const schema = new mongoose.Schema({
     age: Number,
     password: String,
     role: {
-        type: String,
-        enum: ['admin', 'user'], 
-        default: 'user' 
+        type: String, 
+        default: 'user',
+        enum: ['user', 'admin']
     },
     logedBy: String,
     cartId: {

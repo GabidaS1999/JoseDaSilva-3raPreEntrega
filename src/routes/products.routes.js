@@ -7,6 +7,23 @@ import { Router } from "express"
 
 const router = Router();
 
+import {getDatosControllers, postDatosControllers, deleteDatosControllers} from "../controllers/product.Controller.js"
+
+//GET
+router.get('/productController', getDatosControllers)
+
+//POST
+router.post('/', postDatosControllers)
+
+//DELETE
+router.delete('/:id', deleteDatosControllers)
+
+
+
+
+
+
+
 
 
 

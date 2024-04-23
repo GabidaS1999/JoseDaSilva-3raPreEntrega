@@ -4,9 +4,18 @@ import { cartsModel } from '../dao/models/carts.models.js';
 const router = Router();
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
+import { fork } from 'child_process';
 
 router.use(cookieParser('CoderS3cr3tC0d3'))
 
+//Con child process - Fork
+router.get("/suma", (req, res)=>{
+    const child = fork("./src/forks/operations.js");
+    child.send("Iniciar calculo");
+    child.on("message", result=>{
+        res.send(`El resultado de la operacion es ${result}`)
+    })
+})
 
 router.get('/setCookie', (req, res) => {
     //sin firma
