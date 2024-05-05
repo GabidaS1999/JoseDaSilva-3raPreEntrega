@@ -4,7 +4,7 @@ import { createHash, isValidPassword } from "../utils.js";
 import passport from "passport";
 import { generateJWTOKEN, authToken } from "../utils.js";
 import cookieParser from 'cookie-parser';
-
+import  {cartsModel}  from "../dao/models/carts.models.js";
 const router = Router();
 router.use(cookieParser('CoderS3cr3tC0d3'))
 
@@ -40,33 +40,52 @@ router.get("/fail-register", (req, res) => {
     res.status(401).send({error:"Error en el registro"})
 })
 
-router.post("/login", passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post("/login", passport.authenticate('jwt', { session: false }), async (req, res) => {
     console.log("Usuario encontrado: ");
     const user = req.user;
     console.log(user);
     
     if (!user) {
-        return res.status(401).send({ status: "error", error: "Credenciales incorrectas" });
+
+        return res.status(401).send({ status: "error", message: "Credenciales incorrectas" });
     }
 
-     res.send({ status: "success", payload: req.session.user, message: "Primer logueo realizado" });
+    const accessToken = generateJWTOKEN(user);
+    console.log(accessToken);
 
-    //JWT
-    const access_token = generateJWTOKEN(user)
-    console.log(access_token);
-    res.send(access_token)
-
-});
-
-router.delete("/logout", (req, res) => {
-  req.session.destroy(error => {
-        if (error) {
-            res.status(500).json({ error: "error_logout", message: "Error al cerrar la sesión" });
-        } else {
-            res.status(200).json({ redirectTo: "/users/login" }); // Enviar la ruta de redirección
-        }
+   
+    res.send({
+        status: "success",
+        token: accessToken,
+        message: "Primer logueo realizado"
     });
 });
+
+
+
+
+router.delete("/logout", passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if (!req.user) {
+        return res.status(403).json({ error: "not_authenticated", message: "Usuario no autenticado." });
+    }
+
+    try {
+  
+        await cartsModel.deleteOne(req.user._id);
+
+        req.session.destroy(error => {
+            if (error) {
+                res.status(500).json({ error: "error_logout", message: "Error al cerrar la sesión" });
+            } else {
+                res.status(200).json({ redirectTo: "/users/login" }); 
+            }
+        });
+    } catch (error) {
+        console.error("Error al eliminar el carrito:", error);
+        res.status(500).json({ error: "error_deleting_cart", message: "Error al eliminar el carrito" });
+    }
+});
+
 
 router.get('/current',passport.authenticate('jwt', {session: false}), (req, res) => {
     res.render('profile2', {

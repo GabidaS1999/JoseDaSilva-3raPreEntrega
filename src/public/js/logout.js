@@ -6,13 +6,19 @@ button.addEventListener('click', e => {
     fetch('/api/session/logout', {
         method: 'DELETE'
     })
-    .then(result =>
-        {if(result.status === 200){
-            window.location.replace('/users/login')
+    .then(result => {
+        if(result.status === 200){
+            localStorage.clear(); 
+            window.location.replace('/users/login');
+        } else {
+            console.error("Failed to log out");
         }
-    }
-    )
+    })
+    .catch(error => {
+        console.error('Error during logout:', error);
+    });
 });
+
 
 
 

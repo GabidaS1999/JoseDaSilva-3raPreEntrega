@@ -20,12 +20,17 @@ form.addEventListener('submit', e => {
             result.json()
                 .then ( json=> {
                     console.log(json);
+                    localStorage.setItem('jwtToken', json.token);
+                    localStorage.setItem('cartId', json.cartId);
                     console.log("Cookie generada");
                     console.log(document.cookie)
-                    alert("Login realizado con exito")
+                    alert("Login realizado con exito y carrito creado")
             })
             window.location.replace('/products')
+        }else {
+            alert("Error al iniciar sesión");
         }
     }
+
     )
 })

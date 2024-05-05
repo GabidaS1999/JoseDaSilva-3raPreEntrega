@@ -11,6 +11,9 @@ const schema = new mongoose.Schema({
     },
     age: Number,
     password: String,
+    fullName:{
+        type: String
+    },
     role: {
         type: String, 
         default: 'user',

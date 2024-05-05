@@ -140,7 +140,7 @@ export default class CartService {
         }
     }
 
-update = async (cid, newProductsArray) => {
+    update = async (cid, newProductsArray) => {
     try {
         
         let existingCart = await cartsModel.findById(cid);

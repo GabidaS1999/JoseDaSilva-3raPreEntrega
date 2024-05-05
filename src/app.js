@@ -15,6 +15,8 @@ import  FileStore  from "session-file-store";
 import MongoStore from "connect-mongo";
 import userRoutes from './routes/users.views.router.js';
 import sessionRoutes from './routes/session.router.js';
+import emailRouter from './routes/email.router.js';
+import smsRouter from './routes/sms.router.js';
 import githubLoginViewRouter from './routes/github-login.views.router.js'
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
@@ -65,7 +67,10 @@ const connectMongo = async () => {
 connectMongo();
 
 //cors
-app.use(cors());
+const corsOptions = {
+    credentials: true, // Permitir cookies
+  };
+app.use(cors(corsOptions));
 
 
 
@@ -114,6 +119,8 @@ app.use('/users', userRoutes);
 app.use('/', viewsRoutes);
 app.use('/github', githubLoginViewRouter)
 app.use('/api/jwt', jwtRouter);
+app.use('/api/email', emailRouter)
+app.use('/api/sms', smsRouter)
 
 const usersExtendRouter = new UsersExtendRouter();
 app.use("/api/extend/users", usersExtendRouter.getRouter());

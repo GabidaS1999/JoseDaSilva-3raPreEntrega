@@ -4,7 +4,7 @@ import userModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import GitHubStrategy from 'passport-github2';
 import jwtStrategy from 'passport-jwt';
-import {PRIVATE_KEY} from '../utils.js';
+import { PRIVATE_KEY } from '../utils.js';
 
 const JwtStrategy = jwtStrategy.Strategy;
 const ExtractJwt = jwtStrategy.ExtractJwt;
@@ -17,10 +17,10 @@ const initializePassport = () => {
         clientID: 'Iv1.3ddafcc84484a67e',
         clientSecret: 'af84a2e0915756830b1a6fdf2a516a3341d0bbb5',
         callbackURL: 'http://localhost:8080/api/session/githubcallback'
-    }, async (accessToken, refreshToken, profile, done)=>{
+    }, async (accessToken, refreshToken, profile, done) => {
         console.log(profile);
         try {
-            const user = await userModel.findOne({email: profile._json.email});
+            const user = await userModel.findOne({ email: profile._json.email });
             console.log("Usuario encontrado")
             console.log(user);
             if (!user) {
@@ -33,10 +33,10 @@ const initializePassport = () => {
                     password: '',
                     logedBy: 'GitHub'
                 }
-                const result =  await userModel.create(newUser)
-                return done (null, result)
-            }else{
-                return done (null, user)
+                const result = await userModel.create(newUser)
+                return done(null, result)
+            } else {
+                return done(null, user)
             }
 
 
@@ -53,11 +53,11 @@ const initializePassport = () => {
             jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
             secretOrKey: PRIVATE_KEY
 
-        }, async(jwt_payload, done)=>{
+        }, async (jwt_payload, done) => {
             console.log(`Entrando a passpord strategy con jwt`)
             try {
-                
-                console.log(`JWT obtenido del PayLoad ${jwt_payload}`);
+
+                console.log(`JWT obtenido del PayLoad` + jwt_payload);
                 return done(null, jwt_payload.user);
 
 
@@ -74,10 +74,12 @@ const initializePassport = () => {
             const { first_name, last_name, email, age } = req.body;
 
             try {
-                const exist = await userModel.findOne({ email })
+                const exist = await userModel.findOne({ email: req.body.email });
                 if (exist) {
-                    console.log("El usuario ya existe");
-                    return done(null, false)
+                    const payload = { id: exist._id };
+                    const token = jwt.sign(payload, 'CoderS3cr3tC0d3', { expiresIn: '1d' });
+
+                    res.json({ token: token });
                 }
                 const user = {
                     first_name,
@@ -97,36 +99,36 @@ const initializePassport = () => {
     ))
 
 
-    passport.use('login',  new localStrategy({ passReqToCallback: true, usernameField: 'email' },
-    async (req, username, password, done)=>{
-        try {
-            const user = await userModel.findOne({email: username})
-            console.log("Usuario encontrado: ");
-            console.log(user);
+    passport.use('login', new localStrategy({ passReqToCallback: true, usernameField: 'email' },
+        async (req, username, password, done) => {
+            try {
+                const user = await userModel.findOne({ email: username })
+                console.log("Usuario encontrado: ");
+                console.log(user);
 
-            if (!user) {
-                console.warn("Credenciales invalidas para: " + username);
-                return done (null, false)
+                if (!user) {
+                    console.warn("Credenciales invalidas para: " + username);
+                    return done(null, false)
+                }
+
+                if (!isValidPassword(user, password)) {
+                    console.warn("Credenciales invalidas para: " + username);
+                    return done(null, false)
+                };
+                return done(null, user)
+
+            } catch (error) {
+                return done(error)
             }
-
-            if (!isValidPassword(user, password)) {
-                console.warn("Credenciales invalidas para: " + username);
-                return done (null, false)
-            };
-            return done(null, user)
-
-        } catch (error) {
-            return done(error)
-        }
-    }))
+        }))
 
 
 
 
-    passport.serializeUser((user, done)=>{
+    passport.serializeUser((user, done) => {
         done(null, user._id)
     })
-    passport.deserializeUser(async(id, done)=>{
+    passport.deserializeUser(async (id, done) => {
         try {
             let user = await userModel.findById(id);
             done(null, user)

@@ -1,8 +1,4 @@
-import ProductsService from "../dao/Db/products.service.js";
-
-
-
-const productService = new ProductsService();
+import { productService } from "../service/factory.js";
 
 
 const getDatosControllers = async (req, res)=>{

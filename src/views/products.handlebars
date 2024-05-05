@@ -4,34 +4,37 @@
     <p>Email: {{user.email}}</p>
     <p>Rol: {{user.role}}</p>
     <p>LogedBy: {{user.logedBy}}</p>
-     <input type="button" value="logout">
+    <input type="button" value="logout">
+</div>
+    <button><a href="/carts/{{CartId}}" >Ver Carrito</a></button>
+    <button><a href="/message">Ir al chat</a></button>
+
+
+<h1>Productos</h1>
+
+{{#each result.docs}}
+<div>
+    <p>Nombre: {{this.title}}</p>
+    <p>Descripcion: {{this.description}}</p>
+    <p>Precio: ${{this.price}}</p>
+    <p>Categoria: {{this.category}}</p>
+    <p>Stock: {{this.stock}}</p>
+    <button class="buttonAdd" data-id="{{this._id}}">Añadir al carrito</button>
+</div>
+<br />
+{{/each}}
+
+<div>
+    {{#if result.hasPrevPage}}
+    <a href="{{result.prevLink}}">&lt;&lt; Anterior</a>
+    {{/if}}
+
+    &nbsp; {{result.page}} &nbsp;
+
+    {{#if result.hasNextPage}}
+    <a href="{{result.nextLink}}">Siguiente &gt;&gt;</a>
+    {{/if}}
 </div>
 
-
-    <h1>Productos</h1>
-
-    {{#each result.docs}}
-        <div>
-            <p>Nombre: {{this.title}}</p>
-            <p>Descripcion: {{this.description}}</p>
-            <p>Precio: ${{this.price}}</p>
-            <p>Categoria: {{this.category}}</p>
-            <p>Stock: {{this.stock}}</p>
-            <button id="buttonAdd">Añadir al carrito</button>
-        </div>
-        <br />
-    {{/each}}
-
-    <div>
-        {{#if result.hasPrevPage}}
-            <a href="{{result.prevLink}}">&lt;&lt; Anterior</a>
-        {{/if}}
-
-        &nbsp; {{result.page}} &nbsp;
-
-        {{#if result.hasNextPage}}
-            <a href="{{result.nextLink}}">Siguiente &gt;&gt;</a>
-        {{/if}}
-    </div>
-
 <script src="/js/logout.js"></script>
+<script src="/js/addProduct.js"></script>

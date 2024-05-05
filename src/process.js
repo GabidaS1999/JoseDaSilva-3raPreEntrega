@@ -5,6 +5,7 @@ const program = new Command(); //Crea la instancia de comandos de commander
 program
     .option('-d', "Variable para debug", false)
     .option('-p <port>', "Puerto del server", 8080)
+    .option('--persist <mode>', 'Modo de persistencia', "mongodb")
     .option('--mode <mode>', "Modo de trabajo del server", 'development')
 
     console.log('Option', program.opts());
