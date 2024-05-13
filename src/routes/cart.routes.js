@@ -6,6 +6,10 @@ import ProductsService from "../dao/Db/products.service.js";
 import ticketModel from "../dao/models/ticket.model.js";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
+import CustomError from "../service/errors/CustomError.js";
+import { addProductErrorInfo } from "../service/errors/messages/addProductErrorInfo.js";
+import EErrors from "../service/errors/errors-enum.js";
+import errorHandler from '../service/errors/middlewares/index.js'
 
 const router = Router();
 router.use(cookieParser('CoderS3cr3tC0d3'));
@@ -129,17 +133,26 @@ router.post('/:cid/purchase', passport.authenticate('jwt', { session: false }), 
     let totalAmount = 0;
     let updatedProducts = [];
 
-    try {
+
         for (let item of cart.products) {
             const product = await productService.getProductById(item._id);
+            
             if (product.stock >= item.quantity) {
                 totalAmount += product.price * item.quantity;
+                
+
                 await productService.updateProduct(item._id, -item.quantity);
             } else {
+                let productStock = product.stock
+                CustomError.createError({
+                    name: "Product add error",
+                    cause: addProductErrorInfo({productStock}),
+                    message: "Error tratando de comprar el producto seleccionado",
+                    code: EErrors.INVALID_TYPES_ERROR
+                })
                 updatedProducts.push(item); // Agregar a la lista de productos con stock insuficiente
             }
         }
-
 
         // Generar un ticket de compra
         const newTicket = new ticketModel({
@@ -160,12 +173,10 @@ router.post('/:cid/purchase', passport.authenticate('jwt', { session: false }), 
         }
 
         res.send({ status: "success", msg: "Compra realizada con éxito y carrito actualizado", ticketId: newTicket._id });
-    } catch (error) {
-        console.error("Error al finalizar la compra:", error);
-        res.status(500).send({ error: "Error interno del servidor" });
-    }
+   
 });
 
+router.use(errorHandler)
 
 
 

@@ -1,6 +1,9 @@
 import CustomRouter from "./custom.routes.js";
 import userModel from "../../dao/models/user.model.js";
 import { createHash, isValidPassword, generateJWTOKEN } from "../../utils.js";
+import CustomError from '../../service/errors/CustomError.js';
+import EErrors from '../../service/errors/errors-enum.js';
+import {generateUserErrorInfo, generateUserErrorInfoENG, generateUserErrorInfoFR, generateUserErrorInfoPT} from '../../service/errors/messages/user-creation-error.message.js';
 
 
 export default class UsersExtendRouter extends CustomRouter {
@@ -61,6 +64,7 @@ export default class UsersExtendRouter extends CustomRouter {
         });
         this.post("/register", ["PUBLIC"], async (req, res)=>{
             const { first_name, last_name, email, age, password } = req.body;
+        
             console.log("Registrando usuario:");
             console.log(req.body);
 

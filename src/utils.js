@@ -2,6 +2,21 @@ import {fileURLToPath} from 'url';
 import { dirname } from 'path';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import {faker} from '@faker-js/faker';
+
+
+faker.location = 'es';
+export const generateProduct = ()=>{
+    
+    return {
+        title: faker.commerce.productName(),
+        price: faker.commerce.price(),
+        stock: faker.number.int(123),
+        id: faker.database.mongodbObjectId(),
+        image: faker.image.image(),
+    }
+}
+
 
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 

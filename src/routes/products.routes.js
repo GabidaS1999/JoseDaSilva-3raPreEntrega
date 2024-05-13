@@ -1,15 +1,21 @@
 import ProductManager from '../dao/ManagerFS/Product-Manager.js';
 import ProductsService from '../dao/Db/products.service.js';
+import { Router } from "express"
+import {getProducts} from '../controllers/product.Controller.js';
+import errorHandler from '../service/errors/middlewares/index.js'
+
+
 let productManager = new ProductManager();
 
 let productService = new ProductsService();
-import { Router } from "express"
+
 
 const router = Router();
 
 import {getDatosControllers, postDatosControllers, deleteDatosControllers} from "../controllers/product.Controller.js"
 
 //GET
+router.get('/mockingproducts', getProducts);
 router.get('/productController', getDatosControllers)
 
 //POST
@@ -19,7 +25,7 @@ router.post('/', postDatosControllers)
 router.delete('/:id', deleteDatosControllers)
 
 
-
+router.use(errorHandler)
 
 
 

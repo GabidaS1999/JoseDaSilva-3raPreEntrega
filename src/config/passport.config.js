@@ -5,6 +5,9 @@ import { createHash, isValidPassword } from "../utils.js";
 import GitHubStrategy from 'passport-github2';
 import jwtStrategy from 'passport-jwt';
 import { PRIVATE_KEY } from '../utils.js';
+import CustomError from '../service/errors/CustomError.js';
+import EErrors from '../service/errors/errors-enum.js';
+import {generateUserErrorInfo, generateUserErrorInfoENG, generateUserErrorInfoFR, generateUserErrorInfoPT} from '../service/errors/messages/user-creation-error.message.js';
 
 const JwtStrategy = jwtStrategy.Strategy;
 const ExtractJwt = jwtStrategy.ExtractJwt;
@@ -74,6 +77,15 @@ const initializePassport = () => {
             const { first_name, last_name, email, age } = req.body;
 
             try {
+                if(!first_name || !email){
+                    //Create custom Error
+                    CustomError.createError({
+                        name: "User creation error",
+                        cause: generateUserErrorInfo({first_name, email}),
+                        message: "Error tratando de crear el usuario",
+                        code: EErrors.INVALID_TYPES_ERROR
+                    })
+                }
                 const exist = await userModel.findOne({ email: req.body.email });
                 if (exist) {
                     const payload = { id: exist._id };
@@ -92,8 +104,9 @@ const initializePassport = () => {
 
 
                 return done(null, result)
-            } catch (error) {
-                return done("Error registrando el usuario " + error)
+            }catch (error) {
+                console.error(error.cause);
+                return done({error: error.code, message:error.message});
             }
         }
     ))
