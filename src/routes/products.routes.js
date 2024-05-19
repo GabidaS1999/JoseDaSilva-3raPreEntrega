@@ -33,6 +33,7 @@ router.use(errorHandler)
 
 
 
+
 router.get('/', async (req, res) => {
     const socket = req.io;
     let todosLosProductos = await productService.getAll();

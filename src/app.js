@@ -26,7 +26,7 @@ import UsersExtendRouter from "./routes/custom/users.extend.routes.js";
 import config from "./config/config.js";
 import MongoSingleton from "./config/mongodb-singleton.js";
 import cors from 'cors';
-
+import { addLogger } from "./config/logger_CUSTOM.js";
 
 
 
@@ -65,6 +65,8 @@ const connectMongo = async () => {
     }
 }
 connectMongo();
+
+app.use(addLogger)
 
 //cors
 const corsOptions = {
@@ -125,6 +127,17 @@ app.use('/api/sms', smsRouter)
 const usersExtendRouter = new UsersExtendRouter();
 app.use("/api/extend/users", usersExtendRouter.getRouter());
 
+
+//LOGGER
+app.get("/loggerTest", (req, res)=>{
+    // Determinada logica de la ruta
+    req.logger.warning("Mensaje de prueba de warning en un endpoint: /loggerTest")
+    req.logger.debug("Mensaje de prueba de debug en un endpoint: /loggerTest")
+    req.logger.info("Mensaje de prueba de info en un endpoint: /loggerTest")
+    req.logger.error("Mensaje de prueba de error en un endpoint: /loggerTest")
+    req.logger.fatal("Mensaje de prueba de fatal en un endpoint: /loggerTest")
+    res.send("Prueba logger")
+})
 
 //cookie
 app.use(cookieParser("Cod3rS3cr3tC0d3"));

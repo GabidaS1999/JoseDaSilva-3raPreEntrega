@@ -32,7 +32,7 @@ router.get('/githubcallback', passport.authenticate('github', { failureRedirect:
 })
 
 router.post("/register", passport.authenticate('register', {failureRedirect:'/api/session/fail-register' }), async(req, res)=>{
-    console.log("Registrando usuario");
+    req.logger.info("Registrando usuario");
     res.status(201).send({status: 'succes', message: "Usuario creado de forma existosa"})
 });
 
@@ -41,13 +41,14 @@ router.get("/fail-register", (req, res) => {
 })
 
 router.post("/login", passport.authenticate('jwt', { session: false }), async (req, res) => {
-    console.log("Usuario encontrado: ");
     const user = req.user;
-    console.log(user);
+    
     
     if (!user) {
 
         return res.status(401).send({ status: "error", message: "Credenciales incorrectas" });
+    }else{
+        req.logger.info(`Usuario encontrado: ${user}` );
     }
 
     const accessToken = generateJWTOKEN(user);

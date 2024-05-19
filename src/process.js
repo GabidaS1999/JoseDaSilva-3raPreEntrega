@@ -8,10 +8,6 @@ program
     .option('--persist <mode>', 'Modo de persistencia', "mongodb")
     .option('--mode <mode>', "Modo de trabajo del server", 'development')
 
-    console.log('Option', program.opts());
-    console.log('Option mode', program.opts().mode);
-    console.log('Option port', program.opts().p);
-
 
 program.parse();//Parsea los comandos y verifica que esten correctos
 

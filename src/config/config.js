@@ -1,11 +1,6 @@
 import dotenv from 'dotenv';
 import program from "../process.js";
 
-// program
-//     .option('-d', 'Variable para debug', false)
-//     .option('--persist <mode>', 'Modo de persistencia', "mongodb")
-//     .option('--mode <mode>', 'Modo de trabajo', 'dev')
-// program.parse();
 
 
 
@@ -25,6 +20,7 @@ export default {
     port: process.env.SERVER_PORT,
     mongoUrl: process.env.MONGO_URL,
     persistence: program.opts().persist,
+    environment:environment,
     adminName: process.env.ADMIN_NAME,
     adminPassword: process.env.ADMIN_PASSWORD,
     gmailAccount: process.env.GMAIL_ACCOUNT,

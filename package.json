@@ -142,6 +142,7 @@
     "webidl-conversions": "^7.0.0",
     "whatwg-url": "^13.0.0",
     "which": "^2.0.2",
+    "winston": "^3.13.0",
     "wordwrap": "^1.0.0",
     "wrap-ansi": "^8.1.0",
     "wrap-ansi-cjs": "^7.0.0",

@@ -9,13 +9,13 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await userModel.findOne({ email });
-        console.log(`Usuario encontrado: ${user}`);
+        req.logger.info(`Usuario encontrado: ${user}`);
         if (!user) {
-            console.warn("Usuario no encontrado");
+            req.logger.error("Usuario no encontrado");
             return res.status(401).send({ error: "Not Found", message: "Usuario no encontrado" });
         }
         if (!isValidPassword(user, password)) {
-            console.warn("Credenciales inválidas");
+            req.logger.error("Credenciales inválidas");
             return res.status(401).send({ error: "Unauthorized", message: "Usuario y contraseña no coinciden" });
         }
 
@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
         
         res.status(200).send({ message: "Login successful", token: accessToken, cartId: cart._id.toString() });
     } catch (error) {
-        console.log("Error interno del servidor:", error);
+        req.logger.error("Error interno del servidor:", error);
         return res.status(500).send({ error: "Internal Server Error", message: "Error interno de la aplicación" });
     }
 });
