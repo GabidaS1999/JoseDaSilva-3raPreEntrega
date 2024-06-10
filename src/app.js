@@ -1,4 +1,6 @@
 import express from "express";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from 'swagger-ui-express';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import exphbs from 'express-handlebars';
@@ -28,6 +30,24 @@ import MongoSingleton from "./config/mongodb-singleton.js";
 import cors from 'cors';
 import { addLogger } from "./config/logger_CUSTOM.js";
 
+import path from 'path'
+
+
+//SWAGGER
+const swaggerOptions = {
+    definition:{
+        openai: "3.0.1",
+        info: {
+            title: "Documentación API",
+            description: "Documentacion para uso de swagger",
+            version: "1.0.0"
+        }
+    },
+    apis: ['./src/docs/**/*.yaml']
+
+}
+const specs = swaggerJSDoc(swaggerOptions);
+app.use('/apidocs', swaggerUiExpress.serve,swaggerUiExpress.setup(specs))
 
 
 
@@ -89,6 +109,10 @@ app.use(session({
 }))
 
 
+
+
+
+
 //passport
 initializePassport();
 app.use(passport.initialize());
@@ -128,6 +152,8 @@ const usersExtendRouter = new UsersExtendRouter();
 app.use("/api/extend/users", usersExtendRouter.getRouter());
 
 
+
+
 //LOGGER
 app.get("/loggerTest", (req, res)=>{
     // Determinada logica de la ruta
@@ -162,6 +188,10 @@ const httpServer = app.listen(SERVER_PORT, () => {
 
 
 });
+
+
+
+
 
 
 
@@ -208,6 +238,7 @@ socketServer.on('connection', socket => {
     })
 
 });
+
 
 
 

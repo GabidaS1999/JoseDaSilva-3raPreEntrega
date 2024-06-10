@@ -1,0 +1,119 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtiene todos los productos disponibles
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un arreglo con los productos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/carts:
+    post:
+      summary: Crea un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Carrito creado exitosamente.
+
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/carts/{cartId}/products/{productId}:
+    post:
+      summary: Agrega un producto al carrito por su ID
+      tags:
+      - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID del carrito al que se desea agregar el producto
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: ID del producto que se desea agregar al carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto agregado exitosamente al carrito.
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/carts/{cartId}/delete/products/{productId}:
+    delete:
+      summary: Elimina un producto del carrito por su ID
+      tags:
+      - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID del carrito al que se desea eliminar el producto
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: ID del producto que se desea eliminar del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado exitosamente del carrito.
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+
+
+
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        user:
+          type: String
+          description: Nombre del usuario
+        products:
+          type:
+            object:
+              type:
+                array:
+                  product:
+                    _id: 
+                      type: ObjectId
+                    title: 
+                      type: String
+                    description: 
+                      type: String
+                    price: 
+                      type: Number
+                    quantity:
+                      type: Number
+      example:
+        _id: ObjectId(655eacde12s3d3dge12hv8h6)
+        user: "Armando"
+        productos: {
+          title: "Television",
+          description: "Super grande",
+          price: 10000,
+          quantity: 1
+        }

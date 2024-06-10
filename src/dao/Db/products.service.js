@@ -22,11 +22,11 @@ export default class ProductsService {
         return newProduct
     }
 
-    async getProductById(productId) {
+   getProductById(productId) {
         if (!ObjectId.isValid(productId)) {
             throw new Error("El ID del producto no es válido");
         }
-        return await productModel.findById(productId);
+        return productModel.findById(productId);
     }
     getProductByCode = async () => {
         try {

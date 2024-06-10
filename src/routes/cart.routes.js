@@ -82,7 +82,7 @@ router.post('/:cid/products/:pid', async (req, res) => {
 })
 
 
-router.delete('/:cid/products/:pid', async (req, res) => {
+router.delete('/:cid/delete/products/:pid', async (req, res) => {
     const cid = req.params.cid;
     const pid = req.params.pid
     const result = await cartService.deleteProductFromCart(cid, pid);

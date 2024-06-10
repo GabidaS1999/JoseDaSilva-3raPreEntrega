@@ -81,6 +81,7 @@
     "minimatch": "^9.0.3",
     "minimist": "^1.2.8",
     "minipass": "^7.0.4",
+    "mocha": "^10.4.0",
     "mongodb": "^6.3.0",
     "mongodb-connection-string-url": "^3.0.0",
     "mongoose": "^8.2.1",
@@ -99,6 +100,7 @@
     "passport-github2": "^0.1.12",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "path-key": "^3.1.1",
     "path-scurry": "^1.10.1",
     "path-to-regexp": "^0.1.7",
@@ -129,6 +131,8 @@
     "string-width-cjs": "^4.2.3",
     "strip-ansi": "^7.1.0",
     "strip-ansi-cjs": "^6.0.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "toidentifier": "^1.0.1",
     "tr46": "^4.1.1",
     "twilio": "^5.0.4",
@@ -161,6 +165,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1"
+    "@faker-js/faker": "^8.4.1",
+    "chai": "^5.1.1"
   }
 }

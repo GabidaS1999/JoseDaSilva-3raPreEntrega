@@ -2,7 +2,7 @@ import ProductManager from '../dao/ManagerFS/Product-Manager.js';
 import ProductsService from '../dao/Db/products.service.js';
 import { Router } from "express"
 import {getProducts} from '../controllers/product.Controller.js';
-import errorHandler from '../service/errors/middlewares/index.js'
+import errorHandler from '../service/errors/middlewares/index.js';
 
 
 let productManager = new ProductManager();
@@ -49,12 +49,12 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:pid', async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-        return res.status(400).send('El ID del producto no es válido.');
-    }
+    // if (!mongoose.Types.ObjectId.isValid(productId)) {
+    //     return res.status(400).send('El ID del producto no es válido.');
+    // }
     try {
         const productId = req.params.pid;
-        const product = await productService.getPorductById(productId);
+        const product = await productService.getProductById(productId);
      
         res.send({ status: "success", msg: `Producto encontrado: ${product.title}`});
         
@@ -86,7 +86,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     try {
         let updateUser = req.body;
         let user = await productService.updateProduct({_id: req.params.id}, updateUser);
@@ -97,7 +97,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:pid', async (req, res) => {
+router.delete('/delete/:pid', async (req, res) => {
     try {
         const productId = req.params.pid;
         const products = await productService.getAll();

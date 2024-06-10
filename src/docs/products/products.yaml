@@ -1,0 +1,163 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos disponibles
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un arreglo con los productos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/products/{productId}:
+    get:
+      summary: Obtiene un producto disponible por id
+      tags:
+        - Productos
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Id del produtco que se desea solicitar
+        schema: 
+          $type: String
+
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un arreglo con el producto.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/products/delete/{productId}:
+    delete:
+      summary: Elimina un producto disponible por id
+      tags:
+        - Productos
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        description: Id del produtco que se desea eliminar
+        schema: 
+          $type: String
+
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un arreglo con el producto.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/products:
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "201":
+          description: Producto creado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+  /api/products/update/{productId}:
+    put:
+      summary: Actualiza un producto disponible por su ID
+      tags:
+      - Productos
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID del producto que se desea actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "200":
+          description: Operación exitosa, el producto ha sido actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado en el servidor, no se puede manejar el proceso.
+
+
+
+
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Breve descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnails:
+          type: String
+          description: Imagen del producto
+        category:
+          type: String
+          description: Categoría del producto
+        code:
+          type: String
+          description: Código del producto
+        stock:
+          type: Number
+          description: Stock del producto
+      example:
+        _id: ObjectId(655eacde12s3d3dge12hv8h6)
+        title: "Producto prueba"
+        description: "Es un test"
+        price: 3499
+        thumbnails: "Imagen test"
+        category: "test"
+        code: "ABC272"
+        stock: 20
