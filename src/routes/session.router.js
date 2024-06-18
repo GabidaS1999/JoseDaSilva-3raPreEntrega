@@ -89,9 +89,18 @@ router.delete("/logout", passport.authenticate('jwt', { session: false }), async
 
 
 router.get('/current',passport.authenticate('jwt', {session: false}), (req, res) => {
+    if (!req.user) {
+        return res.status(403).json({ error: "not_authenticated", message: "Usuario no autenticado." });
+    }else{
+        req.logger.info(`Usuario encontrado: ${req.user}` );
+        return res.send({status: "success", payload:req.user })
+        
+    }
     res.render('profile2', {
         user: req.user
     });
+
+
 });
 
 

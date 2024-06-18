@@ -3,7 +3,7 @@ import ProductsService from '../dao/Db/products.service.js';
 import { Router } from "express"
 import {getProducts} from '../controllers/product.Controller.js';
 import errorHandler from '../service/errors/middlewares/index.js';
-
+import uploader from '../test/utils/uploader.js';
 
 let productManager = new ProductManager();
 
@@ -12,7 +12,8 @@ let productService = new ProductsService();
 
 const router = Router();
 
-import {getDatosControllers, postDatosControllers, deleteDatosControllers} from "../controllers/product.Controller.js"
+import {getDatosControllers, postDatosControllers, deleteDatosControllers, postDatosWithImage} from "../controllers/product.Controller.js"
+
 
 //GET
 router.get('/mockingproducts', getProducts);
@@ -20,6 +21,19 @@ router.get('/productController', getDatosControllers)
 
 //POST
 router.post('/', postDatosControllers)
+router.post('/withimage', uploader.single('thumbnails'), postDatosWithImage)
+
+//PUT
+router.put('/update/:id', async (req, res) => {
+    try {
+        let updateUser = req.body;
+        let user = await productService.updateProduct({_id: req.params.id}, updateUser);
+        res.send({ result: "success", payload: user })
+    } catch (error) {
+        console.log("No se pudo actualizar ususarios con moongose: " + error);
+        res.status(500).send({ error: "No se pudo actualizar usuarios con moongose", message: error });
+    }
+})
 
 //DELETE
 router.delete('/:id', deleteDatosControllers)
@@ -73,7 +87,7 @@ router.post('/', async (req, res) => {
      
 
         if (!product.title || !product.description || !product.code || !product.price || !product.stock || !product.category || !product.thumbnails) {
-            return res.status(400).send({ status: 'error', msg: 'Valores incompletos, revisar datos' });
+            return res.status(400).send({ status: 'error', error: 'Valores incompletos, revisar datos' });
         }
         await productManager.addProduct(product.title, product.description, product.price, product.thumbnails, product.code, product.stock)
         await productService.save({title: product.title,description: product.description, price: product.price, category: product.category, thumbnails: product.thumbnails, code: product.code, stock: product.stock});
@@ -86,16 +100,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/update/:id', async (req, res) => {
-    try {
-        let updateUser = req.body;
-        let user = await productService.updateProduct({_id: req.params.id}, updateUser);
-        res.send({ result: "success", payload: user })
-    } catch (error) {
-        console.log("No se pudo actualizar ususarios con moongose: " + error);
-        res.status(500).send({ error: "No se pudo actualizar usuarios con moongose", message: error });
-    }
-})
+
 
 router.delete('/delete/:pid', async (req, res) => {
     try {

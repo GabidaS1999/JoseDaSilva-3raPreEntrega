@@ -120,6 +120,10 @@ router.get('/products', passport.authenticate('jwt', { session: false }), async 
         return res.status(404).send('Carrito no encontrado');
     }
 
+    if(cart){
+       return res.status(201).send({status: "success", payload: cart})
+    }
+
 
     if (sortPrice !== 'asc' && sortPrice !== 'desc') {
         return res.status(400).send('El parámetro "sortPrice" debe ser "asc" o "desc".');

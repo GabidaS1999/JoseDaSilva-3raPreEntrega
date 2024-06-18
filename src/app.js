@@ -30,26 +30,6 @@ import MongoSingleton from "./config/mongodb-singleton.js";
 import cors from 'cors';
 import { addLogger } from "./config/logger_CUSTOM.js";
 
-import path from 'path'
-
-
-//SWAGGER
-const swaggerOptions = {
-    definition:{
-        openai: "3.0.1",
-        info: {
-            title: "Documentación API",
-            description: "Documentacion para uso de swagger",
-            version: "1.0.0"
-        }
-    },
-    apis: ['./src/docs/**/*.yaml']
-
-}
-const specs = swaggerJSDoc(swaggerOptions);
-app.use('/apidocs', swaggerUiExpress.serve,swaggerUiExpress.setup(specs))
-
-
 
 
 
